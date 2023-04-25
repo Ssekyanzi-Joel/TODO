@@ -14,7 +14,10 @@ SECRET_KEY = 'django-insecure-mald7pdkt(yk7z(_b)ej)3$2)#cz6f6sr^1zy$(#%64a@ey*4(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'group9todoassignment.up.railway.app']
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://group9todoassignment.up.railway.app', 'https://127.0.0.1']
 
 
 # Application definition
