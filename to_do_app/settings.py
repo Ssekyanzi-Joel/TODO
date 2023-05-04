@@ -1,3 +1,4 @@
+from celery.schedules import crontab
 from pathlib import Path
 import os
 from whitenoise import WhiteNoise
@@ -143,3 +144,14 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'todoassignment50@gmail.com'
 EMAIL_HOST_PASSWORD = 'czbbotogbjnoasib'
+
+
+CELERY_BROKER_URL = 'amqp://joel:1234@localhost:5672/joel'
+CELERY_TIMEZONE = 'Africa/Nairobi'
+
+CELERY_BEAT_SCHEDULE = {
+    'send_alert_emails': {
+        'task': 'PNYNE.tasks.send_alert_emails',
+        'schedule': crontab(minute=0, hour=0),  # every day at midnight
+    },
+}

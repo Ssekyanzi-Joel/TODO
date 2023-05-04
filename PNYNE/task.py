@@ -1,20 +1,19 @@
-# tasks.py
-from datetime import date, timedelta
-from django.core.mail import send_mail
-from django.conf import settings
 from celery import shared_task
+from django.core.mail import send_mail
 from .models import Task
+import datetime
+
 
 @shared_task
-def send_due_date_reminders():
-    due_date = date.today() + timedelta(days=1)
-    tasks_due_tomorrow = Task.objects.filter(due_date=due_date)
+def send_alert_emails():
+    now = datetime.datetime.utcnow()
+    upcoming_events = Task.objects.filter(
+        date__lte=now + datetime.timedelta(days=1))
 
-    for task in tasks_due_tomorrow:
+    for event in upcoming_events:
         send_mail(
-            subject=f'Reminder: Task "{task.title}" is due tomorrow',
-            message=f'This is a reminder that your task "{task.title}" is due tomorrow.',
-            from_email=settings.EMAIL_HOST_USER,
-            recipient_list=[task.owner.email],
-            fail_silently=False,
+            'Event Reminder',
+            'The event "{}" is happening tomorrow.'.format(event.name),
+            'todoassignment50@gmail.com',
+            [Task.user.email],
         )

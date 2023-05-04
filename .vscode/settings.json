@@ -1,6 +1,5 @@
 {
   "liveServer.settings.port": 5501,
-  "python.analysis.extraPaths": [
-    "./to_do_app"
-  ]
+  "python.analysis.extraPaths": ["./to_do_app"],
+  "DockerRun.DisableDockerrc": true
 }
