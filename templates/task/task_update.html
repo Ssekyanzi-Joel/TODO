@@ -7,9 +7,10 @@
     <title>Update Task</title>
 </head>
 <body>
+  <h1>Update Task</h1>
 <form action="" method="POST">
   {% csrf_token %} 
-  {{form|crispy}}
+  {{ form|crispy }}
    </select><br><br>
   <input type="submit" value="update" />
 </form>
