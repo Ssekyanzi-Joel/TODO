@@ -19,7 +19,7 @@ class Task(models.Model):
     # the field can be empty.
     completed_date = models.DateTimeField(null=True, blank=True)
     # tasks can be associated with multiple tags
-    tags = models.ManyToManyField('Tag', blank=True)
+    tags = models.OneToOneField('Tag', blank=True)
 
     # human readable string representation of task
     def __str__(self):
@@ -46,10 +46,11 @@ class Task(models.Model):
     @staticmethod
     def get_tasks_due_today():
         return Task.objects.filter(due_date=datetime.today())
-    
+
     def get_absolute_url(self):
         return reverse("home")
-    
+
+
 class Tag(models.Model):  # Tag model that represents a tag that can be associated with tasks
     name = models.CharField(max_length=50)
 
