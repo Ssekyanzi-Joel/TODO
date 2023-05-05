@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import DateInput
-from .models import Task
+from .models import Task, Tag
 
 
 class NewTask(forms.ModelForm):
@@ -10,3 +10,8 @@ class NewTask(forms.ModelForm):
         widgets = {
             'due_date': DateInput(attrs={'type': 'date'}),
         }
+        tags = forms.ModelMultipleChoiceField(
+            queryset=Tag.objects.all(),
+            widget=forms.CheckboxSelectMultiple,
+            required=False
+        )
