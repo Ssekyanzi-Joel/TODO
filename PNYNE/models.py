@@ -19,7 +19,8 @@ class Task(models.Model):
     # the field can be empty.
     completed_date = models.DateTimeField(null=True, blank=True)
     # tasks can be associated with multiple tags
-    tags = models.OneToOneField('Tag', blank=True)
+    tag = models.OneToOneField(
+        'Tag', null=True, blank=True, on_delete=models.CASCADE)
 
     # human readable string representation of task
     def __str__(self):
