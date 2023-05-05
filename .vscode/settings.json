@@ -1,5 +1,9 @@
 {
   "liveServer.settings.port": 5501,
   "python.analysis.extraPaths": ["./to_do_app"],
-  "DockerRun.DisableDockerrc": true
+  "DockerRun.DisableDockerrc": true,
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.autopep8"
+  },
+  "python.formatting.provider": "none"
 }
