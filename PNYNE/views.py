@@ -21,7 +21,7 @@ from django.db import transaction
 
 from .models import Task
 # forms
-from .forms import NewTask
+from .forms import NewTask, TagForm
 
 
 class New_Task(CreateView):
