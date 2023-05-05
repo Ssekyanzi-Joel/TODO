@@ -6,11 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Update Task</title>
 </head>
-
+<body>
 <form action="" method="POST">
   {% csrf_token %} 
   {{form|crispy}}
    </select><br><br>
   <input type="submit" value="update" />
 </form>
+</body>
 {%endblock%}
