@@ -1,0 +1,15 @@
+[build]
+image = "python"
+command = "python manage.py collectstatic --noinput && python manage.py migrate && gunicorn to_do_app.wsgi"
+
+[deploy]
+branch = "main"
+
+[engine]
+node = "16.x"
+
+[[environments]]
+name = "production"
+
+[[environments.variables]]
+key = "DJANGO_SECRET_KEY"

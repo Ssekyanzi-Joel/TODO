@@ -1,6 +1,7 @@
+from celery.schedules import crontab
 from pathlib import Path
 import os
-
+from whitenoise import WhiteNoise
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -14,7 +15,10 @@ SECRET_KEY = 'django-insecure-mald7pdkt(yk7z(_b)ej)3$2)#cz6f6sr^1zy$(#%64a@ey*4(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'group9todoassignment.up.railway.app']
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://group9todoassignment.up.railway.app', 'https://127.0.0.1']
 
 
 # Application definition
@@ -34,7 +38,6 @@ INSTALLED_APPS = [
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
-CRISPY_TEMPLATE_PACK = 'bootstrap5'
 
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 
@@ -46,6 +49,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'to_do_app.urls'
@@ -139,3 +143,14 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'todoassignment50@gmail.com'
 EMAIL_HOST_PASSWORD = 'czbbotogbjnoasib'
+
+
+CELERY_BROKER_URL = 'amqp://joel:1234@localhost:5672/joel'
+CELERY_TIMEZONE = 'Africa/Nairobi'
+
+CELERY_BEAT_SCHEDULE = {
+    'send_alert_emails': {
+        'task': 'PNYNE.tasks.send_alert_emails',
+        'schedule': crontab(minute=0, hour=0),  # every day at midnight
+    },
+}
