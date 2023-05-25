@@ -1,6 +1,25 @@
 {% extends 'main/main.html' %} {% block content %} {{ object.title }}
-
-<a href="{% url 'update_task' object.id %}">Update</a>
-<a href="{% url 'delete_task' object.id %}">Delete</a>
-
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Task Details</title>
+  </head>
+  <a href="{% url 'update_task' object.id %}">Update</a>
+  <a href="{% url 'delete_task' object.id %}">Delete</a>
+  <body>
+    <h1>Task Details</h1>
+    <h2>{{ task.title }}</h2>
+    <p>Description: {{ task.description }}</p>
+    <p>Complete: {{ task.complete }}</p>
+    <p>Created: {{ task.created }}</p>
+    <p>Due Date: {{ task.due_date }}</p>
+    <p>Priority: {{ task.priority }}</p>
+    <p>Completed Date: {{ task.completed_date }}</p>
+    {% if task.tag %}
+    <p>Tag: {{ task.tag.name }}</p>
+    {% else %}
+    <p>No tag associated with this task.</p>
+    {% endif %}
+  </body>
+</html>
 {%endblock%}
