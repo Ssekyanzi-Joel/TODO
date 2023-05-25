@@ -1,6 +1,64 @@
-{% extends 'main/main.html' %} {% block content %} {{ object.title }}
+{% extends 'main/main.html' %} {% block content %}
+<h1>{{ object.title.upper }}</h1>
+<h2>Task Details</h2>
 
-<a href="{% url 'update_task' object.id %}">Update</a>
-<a href="{% url 'delete_task' object.id %}">Delete</a>
+<h3>
+  <a href="{% url 'update_task' object.id %}">Update</a>
+  <a href="{% url 'delete_task' object.id %}">Delete</a>
+</h3>
 
-{%endblock%}
+<p>Description: {{ object.description }}</p>
+<p>Complete: {{ object.complete }}</p>
+<p>Created: {{ object.created }}</p>
+<p>Due Date: {{ object.due_date }}</p>
+<p>Priority: {{ object.priority }}</p>
+<p>Completed Date: {{ object.completed_date }}</p>
+{% if object.tag %}
+<p>Tag: {{ object.tag.name }}</p>
+{% else %}
+<p>No tag associated with this object.</p>
+{% endif %} Time remaining:
+<p id="countdown"></p>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  // JavaScript code for countdown
+  $(document).ready(function () {
+    var dueDate = '{{ object.due_date|date:"Y-m-d\TH:i:s" }}'; // Format the due_date value as "YYYY-MM-DDTHH:mm:ss"
+    var countdownElement = document.getElementById("countdown");
+
+    function updateCountdown() {
+      var now = new Date();
+      var due = new Date(dueDate);
+      var remainingTime = due - now;
+
+      // Calculate remaining days, hours, minutes, and seconds
+      var days = Math.floor(remainingTime / (1000 * 60 * 60 * 24));
+      var hours = Math.floor(
+        (remainingTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+      );
+      var minutes = Math.floor(
+        (remainingTime % (1000 * 60 * 60)) / (1000 * 60)
+      );
+      var seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
+
+      // Display the remaining time in the countdown element
+      countdownElement.innerHTML =
+        days +
+        " days, " +
+        hours +
+        " hours, " +
+        minutes +
+        " minutes, " +
+        seconds +
+        " seconds";
+
+      // Update the countdown every second
+      setTimeout(updateCountdown, 1000);
+    }
+
+    // Initial call to start the countdown
+    updateCountdown();
+  });
+</script>
+{% endblock %}

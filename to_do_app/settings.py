@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     "crispy_bootstrap5",
     # Others
     "PNYNE.apps.PnyneConfig",
+
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"

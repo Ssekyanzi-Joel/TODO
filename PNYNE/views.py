@@ -18,10 +18,14 @@ from django.contrib.auth.views import PasswordChangeView, PasswordChangeForm
 from django.views import View
 from django.shortcuts import redirect
 from django.db import transaction
+from django.views.decorators.csrf import csrf_exempt
 
 from .models import Task
 # forms
 from .forms import NewTask
+# completetask
+from django.http import JsonResponse
+from django.utils import timezone
 
 
 class New_Task(CreateView):
@@ -112,6 +116,11 @@ class TaskDetail(LoginRequiredMixin, DetailView):
     context_object_name = 'task'
     template_name = 'task/task_details.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['remaining_time'] = self.object.countdown()
+        return context
+
 
 class TaskCreate(LoginRequiredMixin, CreateView):
     model = Task
@@ -153,3 +162,25 @@ class TaskReorder(View):
                 self.request.user.set_task_order(positionList)
 
         return redirect(reverse_lazy('tasks'))
+
+
+@csrf_exempt
+def complete_task(request):
+    if request.method == 'POST' and request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
+        task_id = request.POST.get('task_id')
+        completed = request.POST.get('completed') == 'true'
+
+        try:
+            task = Task.objects.get(id=task_id)
+            if completed:
+                task.complete = True
+                task.completed_date = timezone.now()
+            else:
+                task.complete = False
+                task.completed_date = None
+            task.save()
+            return JsonResponse({'success': True})
+        except Task.DoesNotExist:
+            pass
+
+    return JsonResponse({'success': False, 'message': 'Invalid request'})

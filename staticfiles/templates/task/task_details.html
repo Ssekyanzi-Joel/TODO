@@ -1,25 +1,18 @@
-{% extends 'main/main.html' %} {% block content %} {{ object.title }}
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <title>Task Details</title>
-  </head>
-  <a href="{% url 'update_task' object.id %}">Update</a>
-  <a href="{% url 'delete_task' object.id %}">Delete</a>
-  <body>
-    <h1>Task Details</h1>
-    <h2>{{ task.title }}</h2>
-    <p>Description: {{ task.description }}</p>
-    <p>Complete: {{ task.complete }}</p>
-    <p>Created: {{ task.created }}</p>
-    <p>Due Date: {{ task.due_date }}</p>
-    <p>Priority: {{ task.priority }}</p>
-    <p>Completed Date: {{ task.completed_date }}</p>
-    {% if task.tag %}
-    <p>Tag: {{ task.tag.name }}</p>
-    {% else %}
-    <p>No tag associated with this task.</p>
-    {% endif %}
-  </body>
-</html>
-{%endblock%}
+{% extends 'main/main.html' %} {% block content %}
+<a href="{% url 'update_task' object.id %}">Update</a>
+<a href="{% url 'delete_task' object.id %}">Delete</a>
+<h1>Task Details</h1>
+<h2>{{ object.title }}</h2>
+<p>Description: {{ object.description }}</p>
+<p>Complete: {{ object.complete }}</p>
+<p>Created: {{ object.created }}</p>
+<p>Due Date: {{ object.due_date }}</p>
+<p>Priority: {{ object.priority }}</p>
+<p>Completed Date: {{ object.completed_date }}</p>
+{% if object.tag %}
+<p>Tag: {{ object.tag.name }}</p>
+{% else %}
+<p>No tag associated with this object.</p>
+{% endif %} {% if remaining_time %}
+<p>Remaining Time: {{ remaining_time }}</p>
+{% endif %} {% endblock %}

@@ -3,6 +3,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 from django.urls import reverse
+from datetime import timedelta
 
 
 class Task(models.Model):
@@ -25,6 +26,13 @@ class Task(models.Model):
     # human readable string representation of task
     def __str__(self):
         return self.title
+
+    def countdown(self):
+        if self.due_date:
+            now = timezone.now()
+            time_remaining = self.due_date - now
+            return max(time_remaining, timedelta(0))
+        return None
 
     class Meta:
         # tasks should be ordered based on their associsted user

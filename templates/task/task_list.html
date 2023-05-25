@@ -4,42 +4,79 @@
   <h1>Home</h1>
   <p>Hello, {{ user.username }}!</p>
   <p>Here are your tasks:</p>
-  <!DOCTYPE html>
-  <html lang="en">
-    <head>
-      <meta charset="UTF-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>User Tasks</title>
-    </head>
-    <body>
-      <h1>User Tasks</h1>
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Title</th>
-            <th>Description</th>
-            <th>Due Date</th>
-            <th>Priority</th>
-            <th>Tag</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for task in tasks %}
-          <tr>
-            <td>
-              <a href="{% url 'task_details' task.id %}">{{ task.title }}</a>
-            </td>
-            <td>{{ task.description }}</td>
-            <td>{{ task.due_date }}</td>
-            <td>{{ task.priority }}</td>
-            <td>{{ task.tag}}</td>
-            <td></td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </body>
-  </html>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Due Date</th>
+        <th>Priority</th>
+        <th>Tag</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for task in tasks %}
+      <tr>
+        <td>
+          <a href="{% url 'task_details' task.id %}">{{ task.title }}</a>
+        </td>
+        <td>{{ task.description }}</td>
+        <td>{{ task.due_date }}</td>
+        <td>{{ task.priority }}</td>
+        <td>{{ task.tag }}</td>
+        <td>
+          {% if task.complete %} Completed {% else %}
+          <input
+            type="checkbox"
+            id="complete-checkbox-{{ task.id }}"
+            {%
+            if
+            task.completed_date
+            %}disabled{%
+            endif
+            %}
+          />
+          <button onclick="completeTask('{{ task.id }}')">Complete</button>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 </div>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  // JavaScript code for completing a task
+  function completeTask(taskId) {
+    var checkbox = document.getElementById("complete-checkbox-" + taskId);
+    var checked = checkbox.checked;
+
+    // Send an AJAX request to mark the task as complete
+    $.ajax({
+      type: "POST",
+      url: "{% url 'complete_task' %}",
+      data: {
+        csrfmiddlewaretoken: "{{ csrf_token }}",
+        task_id: taskId,
+        completed: checked,
+      },
+      success: function (response) {
+        if (response.success) {
+          if (checked) {
+            checkbox.disabled = true;
+          } else {
+            checkbox.checked = false;
+          }
+        } else {
+          alert("An error occurred. Please try again.");
+        }
+      },
+      error: function () {
+        alert("An error occurred. Please try again.");
+      },
+    });
+  }
+</script>
 {% endblock content %}

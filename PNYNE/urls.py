@@ -1,9 +1,9 @@
 from django.urls import path
 from django.contrib.auth import views as auth_views
 from . import views
-from .views import PasswordsChangeView, New_Task, TaskDetail, TaskUpdate, TaskDeleteView
+from .views import PasswordsChangeView, New_Task,  TaskDetail, TaskUpdate, TaskDeleteView
 # from .views import TaskList, TaskDetail, TaskCreate, TaskUpdate, DeleteView, CustomLoginView, RegisterPage, TaskReorder
-
+# New_Task
 urlpatterns = [
     path('login/', views.signin, name='login'),
     path('register/', views.signup, name='register'),
@@ -16,6 +16,8 @@ urlpatterns = [
     path('create-task/', New_Task.as_view(), name='create-task'),
     path('task-update/<int:pk>/', TaskUpdate.as_view(), name='update_task'),
     path('task-delete/<int:pk>/', TaskDeleteView.as_view(), name='delete_task'),
+    path('complete_task/', views.complete_task, name='complete_task'),
+    # path('create-task/', views.create_task, name='create_task'),
     # path('task-reorder/', TaskReorder.as_view(), name='task-reorder'),
 
     # change password
